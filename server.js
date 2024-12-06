@@ -63,7 +63,7 @@ app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
   if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
     // Gera o token JWT
-    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" }); // Expira em 1 hora
+    const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "1h" }); 
     res.json({ success: true, token, message: "Login bem-sucedido." });
   } else {
     res.status(401).json({ error: "Usuário ou senha inválidos." });
@@ -73,7 +73,7 @@ app.post("/api/login", (req, res) => {
 // Rota pública para obter mensagens
 app.get("/api/aviso", async (req, res) => {
   try {
-    const mensagem = await Mensagem.findOne(); // Busca a mensagem mais recente
+    const mensagem = await Mensagem.findOne(); 
     if (!mensagem) {
       return res.status(404).json({ error: "Nenhuma mensagem encontrada." });
     }
@@ -96,9 +96,9 @@ app.post("/api/mensagem", authMiddleware, async (req, res) => {
 
   try {
     const novaMensagem = await Mensagem.findOneAndUpdate(
-      {}, // Critério vazio para atualizar o único documento existente
-      { title, mensagem }, // Novos dados
-      { new: true, upsert: true } // Cria se não existir
+      {}, 
+      { title, mensagem }, 
+      { new: true, upsert: true } 
     );
     res.json({
       success: true,
