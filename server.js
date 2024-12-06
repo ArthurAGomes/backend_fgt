@@ -7,10 +7,13 @@ import dotenv from "dotenv";
 // Configuração do dotenv
 dotenv.config();
 
-// Configuração do MongoDB
-const mongoURI = process.env.MONGO_URI; 
+// Definição da URL de conexão com o MongoDB Atlas diretamente
+const mongoURI =
+  process.env.MONGO_URI;
+
 mongoose
-  .connect(mongoURI).then(() => console.log("Conectado ao MongoDB Atlas"))
+  .connect(mongoURI)
+  .then(() => console.log("Conectado ao MongoDB Atlas"))
   .catch((err) => console.error("Erro ao conectar ao MongoDB Atlas:", err));
 
 // Definição do esquema de mensagens
@@ -28,15 +31,15 @@ app.use(cors());
 app.use(express.json());
 
 // Configuração de autenticação
-const JWT_SECRET = process.env.JWT_SECRET; 
+const JWT_SECRET = process.env.JWT_SECRET;
 const CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME, 
+  username: process.env.ADMIN_USERNAME,
   password: process.env.ADMIN_PASSWORD,
 };
 
 // Middleware de autenticação
 function authMiddleware(req, res, next) {
-  const token = req.headers["authorization"]?.split(" ")[1]; 
+  const token = req.headers["authorization"]?.split(" ")[1];
   if (!token) {
     return res.status(401).json({ error: "Token não fornecido." });
   }
@@ -45,7 +48,7 @@ function authMiddleware(req, res, next) {
     if (err) {
       return res.status(401).json({ error: "Token inválido ou expirado." });
     }
-    req.user = decoded; 
+    req.user = decoded;
     next();
   });
 }
@@ -111,6 +114,20 @@ app.post("/api/mensagem", authMiddleware, async (req, res) => {
 // Rota protegida para validar token
 app.get("/api/validate-token", authMiddleware, (req, res) => {
   res.json({ success: true, message: "Token válido.", user: req.user });
+});
+
+// Rota para testar a conexão com o banco
+app.get("/api/banco", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.json({
+      success: true,
+      message: "Conexão com o banco de dados bem-sucedida!",
+    });
+  } catch (err) {
+    console.error("Erro ao conectar ao banco:", err);
+    res.status(500).json({ error: "Erro ao conectar ao banco de dados." });
+  }
 });
 
 // Exportação para Vercel
