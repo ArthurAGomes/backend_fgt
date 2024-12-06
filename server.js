@@ -77,7 +77,11 @@ app.get("/api/aviso", (req, res) => {
 app.post("/api/mensagem", authMiddleware, (req, res) => {
   const { title, mensagem } = req.body;
 
+  console.log("Título recebido:", title); // Verifique o título
+  console.log("Mensagem recebida:", mensagem); // Verifique a mensagem
+
   if (!title || !mensagem) {
+    console.log("Erro: título ou mensagem ausente.");
     return res
       .status(400)
       .json({ error: "Título e mensagem são obrigatórios." });
@@ -91,6 +95,7 @@ app.post("/api/mensagem", authMiddleware, (req, res) => {
     "utf-8",
     (err) => {
       if (err) {
+        console.error("Erro ao salvar a mensagem:", err); // Log de erro do fs
         return res.status(500).json({ error: "Erro ao salvar a mensagem." });
       }
 
@@ -98,6 +103,7 @@ app.post("/api/mensagem", authMiddleware, (req, res) => {
     }
   );
 });
+
 
 // Rota protegida para verificar o token (validação)
 app.get("/api/validate-token", authMiddleware, (req, res) => {
