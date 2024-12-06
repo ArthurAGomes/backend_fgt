@@ -3,7 +3,7 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+const port = process.env.PORT; 
 // Configuração do dotenv
 dotenv.config();
 
@@ -130,7 +130,8 @@ app.get("/api/banco", async (req, res) => {
   }
 });
 
-// Exportação para Vercel
-export default (req, res) => {
-  app(req, res);
-};
+
+
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
+});
