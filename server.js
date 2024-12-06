@@ -42,6 +42,10 @@ function authMiddleware(req, res, next) {
   });
 }
 
+app.get("/", (req, res) => {
+    res.json({ message: "API de mensagens" });
+})
+
 // Rota para login
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
