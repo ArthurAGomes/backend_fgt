@@ -21,8 +21,8 @@ app.use(express.json());
 // Configuração de autenticação
 const JWT_SECRET = process.env.JWT_SECRET; // Obtém a chave secreta do .env
 const CREDENTIALS = {
-  username: process.env.ADMIN_USERNAME, 
-  password: process.env.ADMIN_PASSWORD, 
+  username: process.env.ADMIN_USERNAME, // Usuário padrão, configurável no .env
+  password: process.env.ADMIN_PASSWORD, // Senha padrão, configurável no .env
 };
 
 // Middleware de autenticação para proteger rotas privadas
@@ -100,13 +100,7 @@ app.get("/api/validate-token", authMiddleware, (req, res) => {
   res.json({ success: true, message: "Token válido.", user: req.user });
 });
 
-// Configuração de porta e mensagem no console
-const PORT = process.env.PORT || 3000; // Usa a porta do ambiente ou a 3000
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-// Exporta a API para uso com Vercel
+// Função exportada para o Vercel
 export default (req, res) => {
   app(req, res);
 };
