@@ -27,8 +27,35 @@ const Mensagem = mongoose.model("Mensagem", mensagemSchema);
 
 // Configuração do express
 const app = express();
-app.use(cors());
+// Normalize duplicated slashes middleware to avoid redirects (which break CORS preflight)
+app.use((req, res, next) => {
+  // Only normalize the path part, keep the query string untouched
+  const [path, query] = req.url.split("?");
+  const normalized = path.replace(/\/+/g, "/");
+  if (normalized !== path) {
+    // Replace req.url in-place so Express routing works without issuing a redirect
+    req.url = query ? `${normalized}?${query}` : normalized;
+  }
+  next();
+});
+
+// CORS configuration: allow specific origin from env or default to the production frontend
+const allowedOrigin = process.env.FRONTEND_ORIGIN || "https://fgtdespachante.com.br";
+const corsOptions = {
+  origin: allowedOrigin,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Ensure OPTIONS preflight requests are handled for all routes and return proper CORS headers
+app.options("*", (req, res) => {
+  res.sendStatus(corsOptions.optionsSuccessStatus);
+});
 
 // Configuração de autenticação
 const JWT_SECRET = process.env.JWT_SECRET;
