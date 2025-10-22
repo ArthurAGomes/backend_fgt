@@ -41,9 +41,13 @@ app.use((req, res, next) => {
 });
 
 // CORS configuration: allow specific origin from env or default to the production frontend
-const allowedOrigin = "https://fgtdespachante.com.br";
+const allowedOrigins = [
+  "https://fgtdespachante.com.br", // Sua produção
+  "http://localhost:3000",         // Seu React/Next local (mude a porta se for outra)
+  "http://localhost:5173"          // Porta padrão do Vite, se usar
+];
 const corsOptions = {
-  origin: allowedOrigin,
+  origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
