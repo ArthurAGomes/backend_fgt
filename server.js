@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 // CORS configuration: allow specific origin from env or default to the production frontend
-const allowedOrigin = process.env.FRONTEND_ORIGIN || "https://fgtdespachante.com.br";
+const allowedOrigin = "https://fgtdespachante.com.br";
 const corsOptions = {
   origin: allowedOrigin,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
