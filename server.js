@@ -41,13 +41,9 @@ app.use((req, res, next) => {
 });
 
 
-const allowedOrigins = [
-  "https://fgtdespachante.com.br", 
-  "http://localhost:3000",       
-  "http://localhost:5173"          
-];
+
 const corsOptions = {
-  origin: true,
+  origin:true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
