@@ -3,13 +3,14 @@ import cors from "cors";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-const port = process.env.PORT; 
-// Configuração do dotenv
+
+
 dotenv.config();
 
+const port = process.env.PORT; 
+
 // Definição da URL de conexão com o MongoDB Atlas diretamente
-const mongoURI =
-  process.env.MONGO_URI;
+const mongoURI = process.env.MONGO_URI; // Agora terá o valor do .env
 
 mongoose
   .connect(mongoURI)
@@ -157,8 +158,6 @@ app.get("/api/banco", async (req, res) => {
   }
 });
 
-
-
 app.listen(port, () => {
-  console.log(`Servidor rodando na porta ${port}`);
+  console.log(`Servidor rodando na porta ${port}`); // Agora deve imprimir a porta correta
 });
