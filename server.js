@@ -85,7 +85,9 @@ function authMiddleware(req, res, next) {
 app.get("/", (req, res) => {
   res.json({ message: "API de mensagens" });
 });
-
+app.get("/api/keep-alive", (req, res) => {
+  res.json({ success: true, message: "Server is awake." });
+});
 // Rota para login
 app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
